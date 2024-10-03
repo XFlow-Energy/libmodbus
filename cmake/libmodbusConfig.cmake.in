@@ -1,0 +1,13 @@
+@PACKAGE_INIT@
+
+include("${CMAKE_CURRENT_LIST_DIR}/libmodbusTargets.cmake")
+
+set(LIBMODBUS_CMAKE_DIR "${CMAKE_CURRENT_LIST_DIR}")
+set(LIBMODBUS_INCLUDE_DIRS "@CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_INCLUDEDIR@/modbus")
+
+# Define the imported targets
+foreach(target modbus_shared modbus_static)
+    if(NOT TARGET libmodbus::${target})
+        add_library(libmodbus::${target} ALIAS ${target})
+    endif()
+endforeach()
