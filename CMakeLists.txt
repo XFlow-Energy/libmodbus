@@ -7,6 +7,8 @@ project(libmodbus LANGUAGES C)
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED True)
 
+add_compile_options(-Wno-inconsistent-dllimport -Wno-unused-parameter -Wno-deprecated-declarations)
+
 # Extract version number from configure.ac for dynamic versioning
 set(LIBMODBUS_VERSION)
 set(LIBMODBUS_VERSION_MAJOR)
@@ -41,7 +43,6 @@ include(CheckIncludeFile)
 include(CheckFunctionExists)
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
-# Check for headers and functions
 
 # Standard C library headers
 check_include_file("arpa/inet.h" HAVE_ARPA_INET_H)
@@ -114,12 +115,21 @@ set(HEADER_FILES
 add_library(modbus_shared SHARED ${SRC_FILES})
 add_library(modbus_static STATIC ${SRC_FILES})
 
-# Set the output name to ensure shared and static libraries have the same base name
-set_target_properties(modbus_shared PROPERTIES OUTPUT_NAME "modbus")
-set_target_properties(modbus_static PROPERTIES OUTPUT_NAME "modbus")
+# Ensure DLL export for Windows
+set_target_properties(modbus_shared PROPERTIES 
+    OUTPUT_NAME "libmodbus"
+    WINDOWS_EXPORT_ALL_SYMBOLS ON
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+)
+
+set_target_properties(modbus_static PROPERTIES 
+    OUTPUT_NAME "libmodbus_static"
+    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+)
 
 # Compiler options
-if (CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
+if (CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
     set(COMMON_COMPILE_OPTIONS -Wall -Wextra -Wpedantic -O2)
 elseif (MSVC)
     set(COMMON_COMPILE_OPTIONS /W4)

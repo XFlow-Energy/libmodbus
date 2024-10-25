@@ -9,7 +9,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#ifdef _WIN32
+#include <windows.h>
+#define usleep(x) Sleep((x) / 1000)  // Convert microseconds to milliseconds
+#else
 #include <unistd.h>
+#endif
 
 #include "unit-test.h"
 

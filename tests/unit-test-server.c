@@ -9,13 +9,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 
 // clang-format off
 #ifdef _WIN32
 # include <winsock2.h>
+#include <windows.h>
+#define usleep(x) Sleep((x) / 1000)  // Convert microseconds to milliseconds
+# define close(s) closesocket(s)  // Define close as closesocket for Windows
 #else
 # include <sys/socket.h>
+# include <unistd.h>
 #endif
 
 /* For MinGW */
