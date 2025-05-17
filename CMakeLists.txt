@@ -117,14 +117,14 @@ add_library(modbus_static STATIC ${SRC_FILES})
 
 # Ensure DLL export for Windows
 set_target_properties(modbus_shared PROPERTIES 
-    OUTPUT_NAME "libmodbus"
+    OUTPUT_NAME "modbus"
     WINDOWS_EXPORT_ALL_SYMBOLS ON
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
 )
 
 set_target_properties(modbus_static PROPERTIES 
-    OUTPUT_NAME "libmodbus"
+    OUTPUT_NAME "modbus"
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
 )
 
