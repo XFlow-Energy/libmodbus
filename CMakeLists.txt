@@ -124,7 +124,7 @@ set_target_properties(modbus_shared PROPERTIES
 )
 
 set_target_properties(modbus_static PROPERTIES 
-    OUTPUT_NAME "libmodbus_static"
+    OUTPUT_NAME "libmodbus"
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
 )
 
